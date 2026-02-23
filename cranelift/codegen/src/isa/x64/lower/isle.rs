@@ -280,6 +280,26 @@ impl Context for IsleContext<'_, '_, MInst, X64Backend> {
     }
 
     #[inline]
+    fn has_avx512bw(&mut self) -> bool {
+        self.backend.x64_flags.has_avx512bw()
+    }
+
+    #[inline]
+    fn has_avx512vpopcntdq(&mut self) -> bool {
+        self.backend.x64_flags.has_avx512vpopcntdq()
+    }
+
+    #[inline]
+    fn has_avx512vnni(&mut self) -> bool {
+        self.backend.x64_flags.has_avx512vnni()
+    }
+
+    #[inline]
+    fn has_avx512ifma(&mut self) -> bool {
+        self.backend.x64_flags.has_avx512ifma()
+    }
+
+    #[inline]
     fn has_lzcnt(&mut self) -> bool {
         self.backend.x64_flags.has_lzcnt()
     }

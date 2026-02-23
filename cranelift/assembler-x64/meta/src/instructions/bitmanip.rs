@@ -64,8 +64,8 @@ pub fn list() -> Vec<Inst> {
 
         inst("vpopcntb", fmt("A", [w(xmm1), r(xmm_m128)]), evex(L128, FullMem)._66()._0f38().w0().op(0x54).r(), (_64b | compat) & avx512vl & avx512bitalg),
         inst("vpopcntw", fmt("A", [w(xmm1), r(xmm_m128)]), evex(L128, FullMem)._66()._0f38().w1().op(0x54).r(), (_64b | compat) & avx512vl & avx512bitalg),
-        // FIXME: uncomment when avx512vpopcntdq is bound in cranelift
-        // inst("vpopcntd", fmt("A", [w(xmm1), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x55).r(), (_64b | compat) & avx512vl & avx512vpopcntdq),
-        // inst("vpopcntq", fmt("A", [w(xmm1), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w1().op(0x55).r(), (_64b | compat) & avx512vl & avx512vpopcntdq),
+        // AVX-512 VPOPCNTDQ — dword and qword popcount
+        inst("vpopcntd", fmt("A", [w(xmm1), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x55).r(), (_64b | compat) & avx512vl & avx512vpopcntdq),
+        inst("vpopcntq", fmt("A", [w(xmm1), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w1().op(0x55).r(), (_64b | compat) & avx512vl & avx512vpopcntdq),
     ]
 }

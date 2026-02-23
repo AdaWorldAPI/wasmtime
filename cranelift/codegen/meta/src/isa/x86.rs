@@ -83,6 +83,30 @@ pub(crate) fn define() -> TargetIsa {
         "AVX512F: CPUID.07H:EBX.AVX512F[bit 16]",
         false,
     );
+    let has_avx512bw = settings.add_bool(
+        "has_avx512bw",
+        "Has support for AVX512BW.",
+        "AVX512BW: CPUID.07H:EBX.AVX512BW[bit 30]",
+        false,
+    );
+    let has_avx512vpopcntdq = settings.add_bool(
+        "has_avx512vpopcntdq",
+        "Has support for AVX512_VPOPCNTDQ.",
+        "AVX512_VPOPCNTDQ: CPUID.07H:ECX.AVX512_VPOPCNTDQ[bit 14]",
+        false,
+    );
+    let has_avx512vnni = settings.add_bool(
+        "has_avx512vnni",
+        "Has support for AVX512_VNNI.",
+        "AVX512_VNNI: CPUID.07H:ECX.AVX512_VNNI[bit 11]",
+        false,
+    );
+    let has_avx512ifma = settings.add_bool(
+        "has_avx512ifma",
+        "Has support for AVX512_IFMA.",
+        "AVX512_IFMA: CPUID.07H:EBX.AVX512_IFMA[bit 21]",
+        false,
+    );
     let has_popcnt = settings.add_bool(
         "has_popcnt",
         "Has support for POPCNT.",
@@ -251,7 +275,7 @@ pub(crate) fn define() -> TargetIsa {
     let skylake_avx512 = settings.add_preset(
         "skylake-avx512",
         "Skylake AVX512 microarchitecture.",
-        preset!(broadwell && has_avx512f && has_avx512dq && has_avx512vl),
+        preset!(broadwell && has_avx512f && has_avx512dq && has_avx512vl && has_avx512bw),
     );
     settings.add_preset(
         "skx",
@@ -271,12 +295,12 @@ pub(crate) fn define() -> TargetIsa {
     let cannonlake = settings.add_preset(
         "cannonlake",
         "Canon Lake microarchitecture.",
-        preset!(skylake && has_avx512f && has_avx512dq && has_avx512vl && has_avx512vbmi),
+        preset!(skylake && has_avx512f && has_avx512dq && has_avx512vl && has_avx512vbmi && has_avx512bw && has_avx512ifma),
     );
     let icelake_client = settings.add_preset(
         "icelake-client",
         "Ice Lake microarchitecture.",
-        preset!(cannonlake && has_avx512bitalg),
+        preset!(cannonlake && has_avx512bitalg && has_avx512vpopcntdq && has_avx512vnni),
     );
     // LLVM doesn't use the name "icelake" but Cranelift did in the past; alias it
     settings.add_preset(
@@ -402,6 +426,10 @@ pub(crate) fn define() -> TargetIsa {
                 && has_avx512f
                 && has_avx512vbmi
                 && has_avx512vl
+                && has_avx512bw
+                && has_avx512vpopcntdq
+                && has_avx512vnni
+                && has_avx512ifma
         ),
     );
 
@@ -421,7 +449,7 @@ pub(crate) fn define() -> TargetIsa {
     settings.add_preset(
         "x86_64_v4",
         "Generic x86-64 (V4) microarchitecture.",
-        preset!(x86_64_v3 && has_avx512dq && has_avx512vl),
+        preset!(x86_64_v3 && has_avx512f && has_avx512dq && has_avx512vl && has_avx512bw),
     );
 
     TargetIsa::new("x86", settings.build())
