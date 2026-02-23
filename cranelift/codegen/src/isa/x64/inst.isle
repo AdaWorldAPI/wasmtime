@@ -991,6 +991,18 @@
 (decl pure has_avx512vbmi () bool)
 (extern constructor has_avx512vbmi has_avx512vbmi)
 
+(decl pure has_avx512bw () bool)
+(extern constructor has_avx512bw has_avx512bw)
+
+(decl pure has_avx512vpopcntdq () bool)
+(extern constructor has_avx512vpopcntdq has_avx512vpopcntdq)
+
+(decl pure has_avx512vnni () bool)
+(extern constructor has_avx512vnni has_avx512vnni)
+
+(decl pure has_avx512ifma () bool)
+(extern constructor has_avx512ifma has_avx512ifma)
+
 (decl pure has_lzcnt () bool)
 (extern constructor has_lzcnt has_lzcnt)
 
@@ -2660,6 +2672,36 @@
 ;; Helper for creating `vpopcntb` instructions.
 (decl x64_vpopcntb (XmmMem) Xmm)
 (rule (x64_vpopcntb src) (x64_vpopcntb_a src))
+
+;; Helper for creating `vpopcntd` instructions.
+;; Requires AVX-512 vl and vpopcntdq.
+(decl x64_vpopcntd (XmmMem) Xmm)
+(rule (x64_vpopcntd src) (x64_vpopcntd_a src))
+
+;; Helper for creating `vpopcntq` instructions.
+;; Requires AVX-512 vl and vpopcntdq.
+(decl x64_vpopcntq (XmmMem) Xmm)
+(rule (x64_vpopcntq src) (x64_vpopcntq_a src))
+
+;; Helper for creating `vpxord` instructions.
+;; Requires AVX-512 vl and f.
+(decl x64_vpxord (Xmm XmmMem) Xmm)
+(rule (x64_vpxord src1 src2) (x64_vpxord_c src1 src2))
+
+;; Helper for creating `vpxorq` instructions.
+;; Requires AVX-512 vl and f.
+(decl x64_vpxorq (Xmm XmmMem) Xmm)
+(rule (x64_vpxorq src1 src2) (x64_vpxorq_c src1 src2))
+
+;; Helper for creating `vpternlogd` instructions.
+;; Requires AVX-512 vl and f.
+(decl x64_vpternlogd (Xmm Xmm XmmMem u8) Xmm)
+(rule (x64_vpternlogd src1 src2 src3 imm) (x64_vpternlogd_c src1 src2 src3 imm))
+
+;; Helper for creating `vpternlogq` instructions.
+;; Requires AVX-512 vl and f.
+(decl x64_vpternlogq (Xmm Xmm XmmMem u8) Xmm)
+(rule (x64_vpternlogq src1 src2 src3 imm) (x64_vpternlogq_c src1 src2 src3 imm))
 
 ;; Helper for creating `vpmullq` instructions.
 ;;

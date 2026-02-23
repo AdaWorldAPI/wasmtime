@@ -1,5 +1,5 @@
-use crate::dsl::{Customization::*, Feature::*, Inst, Length::*, Location::*};
-use crate::dsl::{align, fmt, inst, r, rex, rw, sxl, sxq, vex, w};
+use crate::dsl::{Customization::*, Feature::*, Inst, Length::*, Location::*, TupleType::*};
+use crate::dsl::{align, evex, fmt, inst, r, rex, rw, sxl, sxq, vex, w};
 
 #[rustfmt::skip] // Keeps instructions on a single line.
 pub fn list() -> Vec<Inst> {
@@ -56,5 +56,13 @@ pub fn list() -> Vec<Inst> {
         inst("vandnpd", fmt("B", [w(xmm1), r(xmm2), r(xmm_m128)]), vex(L128)._66()._0f().op(0x55).r(), (_64b | compat) & avx),
         inst("vpand", fmt("B", [w(xmm1), r(xmm2), r(xmm_m128)]), vex(L128)._66()._0f().op(0xDB).r(), (_64b | compat) & avx),
         inst("vpandn", fmt("B", [w(xmm1), r(xmm2), r(xmm_m128)]), vex(L128)._66()._0f().op(0xDF).r(), (_64b | compat) & avx),
+        // AVX-512 EVEX-encoded AND instructions.
+        inst("vpandd", fmt("C", [w(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f().w0().op(0xDB).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vpandq", fmt("C", [w(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f().w1().op(0xDB).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vpandnd", fmt("C", [w(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f().w0().op(0xDF).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vpandnq", fmt("C", [w(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f().w1().op(0xDF).r(), (_64b | compat) & avx512vl & avx512f),
+        // AVX-512 ternary logic — VPTERNLOGD / VPTERNLOGQ
+        inst("vpternlogd", fmt("C", [rw(xmm1), r(xmm2), r(xmm_m128), r(imm8)]), evex(L128, Full)._66()._0f3a().w0().op(0x25).r().ib(), (_64b | compat) & avx512vl & avx512f),
+        inst("vpternlogq", fmt("C", [rw(xmm1), r(xmm2), r(xmm_m128), r(imm8)]), evex(L128, Full)._66()._0f3a().w1().op(0x25).r().ib(), (_64b | compat) & avx512vl & avx512f),
     ]
 }

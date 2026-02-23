@@ -1,5 +1,5 @@
-use crate::dsl::{Feature::*, Inst, Length::*, Location::*};
-use crate::dsl::{fmt, inst, r, rw, vex};
+use crate::dsl::{Feature::*, Inst, Length::*, Location::*, TupleType::*};
+use crate::dsl::{evex, fmt, inst, r, rw, vex};
 
 #[rustfmt::skip] // Keeps instructions on a single line.
 pub fn list() -> Vec<Inst> {
@@ -66,5 +66,24 @@ pub fn list() -> Vec<Inst> {
         inst("vfnmsub132pd", fmt("A", packed_ops), enc().w1().op(0x9E).r(), (_64b | compat) & fma),
         inst("vfnmsub213pd", fmt("A", packed_ops), enc().w1().op(0xAE).r(), (_64b | compat) & fma),
         inst("vfnmsub231pd", fmt("A", packed_ops), enc().w1().op(0xBE).r(), (_64b | compat) & fma),
+        // AVX-512F EVEX-encoded FMA packed instructions.
+        inst("vfmadd132ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0x98).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmadd213ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0xA8).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmadd231ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0xB8).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmadd132pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0x98).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmadd213pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0xA8).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmadd231pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0xB8).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmsub132ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0x9A).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmsub213ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0xAA).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmsub231ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0xBA).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmsub132pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0x9A).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmsub213pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0xAA).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfmsub231pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0xBA).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfnmadd132ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0x9C).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfnmadd213ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0xAC).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfnmadd231ps", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w0().op(0xBC).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfnmadd132pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0x9C).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfnmadd213pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0xAC).r(), (_64b | compat) & avx512vl & avx512f),
+        inst("vfnmadd231pd", fmt("B", packed_ops), evex(L128, Full)._66()._0f38().w1().op(0xBC).r(), (_64b | compat) & avx512vl & avx512f),
     ]
 }

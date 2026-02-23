@@ -58,5 +58,10 @@ pub fn list() -> Vec<Inst> {
         // AVX-512 instructions.
         inst("vpmulld", fmt("C", [w(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x40).r(), (_64b | compat) & avx512vl & avx512f),
         inst("vpmullq", fmt("C", [w(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w1().op(0x40).r(), (_64b | compat) & avx512vl & avx512dq),
+        // AVX-512 VNNI — dot product of unsigned bytes and signed words.
+        inst("vpdpbusd", fmt("C", [rw(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x50).r(), (_64b | compat) & avx512vl & avx512vnni),
+        inst("vpdpbusds", fmt("C", [rw(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x51).r(), (_64b | compat) & avx512vl & avx512vnni),
+        inst("vpdpwssd", fmt("C", [rw(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x52).r(), (_64b | compat) & avx512vl & avx512vnni),
+        inst("vpdpwssds", fmt("C", [rw(xmm1), r(xmm2), r(xmm_m128)]), evex(L128, Full)._66()._0f38().w0().op(0x53).r(), (_64b | compat) & avx512vl & avx512vnni),
     ]
 }
